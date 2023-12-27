@@ -1,13 +1,16 @@
 package aamm.order.model;
 
 
+
+
 public abstract class Order {
-    protected int id;
+    
+    protected long id;
     protected String customer;
     protected double fees;
     
 
-    public int getId() {
+    public long getId() {
         return id;
     }
     

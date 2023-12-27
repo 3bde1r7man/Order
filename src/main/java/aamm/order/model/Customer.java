@@ -53,10 +53,10 @@ public class Customer {
     public Location getLocation() {
         return location;
     }
-
     @Override
     public String toString() {
         return "Customer{" + "name=" + name + ", mail=" + mail + ", password=" + password + ", phone=" + phone + ", balance=" + balance + ", friends=" + friends + ", location=" + location + '}';
     }
+
 
 }

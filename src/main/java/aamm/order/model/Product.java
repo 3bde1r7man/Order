@@ -1,6 +1,9 @@
 package aamm.order.model;
 
+
 public class Product {
+    
+    private long id;
     private String serialNumber;
     private String name;
     private double price;
@@ -16,7 +19,11 @@ public class Product {
         this.category = category;
     }
     
-    public String getId() {
+    public long getId() {
+        return id;
+    }
+
+    public String getSerialNumber() {
         return serialNumber;
     }
     public String getName() {

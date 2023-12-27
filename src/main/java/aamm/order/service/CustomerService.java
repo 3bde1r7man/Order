@@ -1,7 +1,9 @@
 package aamm.order.service;
 
-import aamm.order.DB;
+import aamm.order.Repository.CustomerRepository;
 import aamm.order.model.Customer;
+
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ public class CustomerService {
     private RegisterValidator registerValidator;
 
     @Autowired
-    private DB DB;
+    private CustomerRepository customerRepo;
 
     
     public boolean register(Customer customer) {
@@ -25,6 +27,28 @@ public class CustomerService {
     }
     
     public Customer getCustomer(String name) {
-        return DB.getCustomer(name);
+        return customerRepo.find(name);
+    }
+
+    public boolean deleteCustomer(String name) {
+        if(customerRepo.exists(name)){
+            customerRepo.delete(name);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean updateCustomer(Customer customer) {
+        if(customerRepo.exists(customer.getName())){
+            customerRepo.update(customer);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public HashMap<String, Customer> getAllCustomers() {
+        return customerRepo.findAll();
     }
 }

@@ -1,7 +1,7 @@
 package aamm.order.service;
 
-import aamm.order.DB;
 import aamm.order.Validator;
+import aamm.order.Repository.CustomerRepository;
 import aamm.order.model.Customer;
 
 import java.util.regex.Pattern;
@@ -14,16 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegisterValidator implements Validator {
     @Autowired
-    private DB DB;
+    private CustomerRepository customerRepo;
 
-    public RegisterValidator(DB DB) {
-        this.DB = DB;
-    }
 
     @Override
     public boolean validate(Customer customer) {
         if(isStrongPassword(customer.getPassword()) && isEGYPhoneNum(customer.getPhone()) && isEmail(customer.getMail()) && isUniqeUsername(customer.getName())){
-            DB.add(customer);
+            customerRepo.save(customer);
             return true;
         }
         else{
@@ -57,11 +54,11 @@ public class RegisterValidator implements Validator {
     }
 
 
-    public boolean isUniqeUsername(String username) {
-        if(DB.exists(username)){
+    public boolean isUniqeUsername(String name) {
+        // Username must be unique.
+        if(customerRepo.exists(name)){
             return false;
-        }
-        else{
+        }else{
             return true;
         }
     }

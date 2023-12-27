@@ -1,6 +1,8 @@
 package aamm.order.model;
 
+
 public class Location {
+    
     String nation;
     String city;
     String section;
