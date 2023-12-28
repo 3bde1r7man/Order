@@ -48,6 +48,12 @@ public class CustomerService {
         }
     }
 
+    public void deductBalance(String name, double amount) {
+        Customer customer = customerRepo.find(name);
+        customer.setBalance(customer.getBalance() - amount);
+        customerRepo.update(customer);
+    }
+
     public HashMap<String, Customer> getAllCustomers() {
         return customerRepo.findAll();
     }

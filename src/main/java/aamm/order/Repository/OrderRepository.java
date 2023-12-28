@@ -34,8 +34,12 @@ public class OrderRepository {
     }
 
     public void changeStatus(int id, String status) {
-        Order order = orders.get(id);
-        order.setStatus(Status.valueOf(status));
+        Order order = orders.get(id); 
+        order.setStatus(Status.fromString(status));
         orders.put(id, order);
+    }
+
+    public void update(Order order) {
+        orders.put(order.getId(), order);
     }
 }

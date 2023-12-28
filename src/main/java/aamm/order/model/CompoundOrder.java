@@ -5,19 +5,19 @@ import java.util.List;
 
 
 
-public class CompundOrder extends Order {
+public class CompoundOrder extends Order {
     List<SimpleOrder> orders;
     
     
     // @Override
     // public void placeOrder(Order order) {
-    //     CompundOrder compundOrder = (CompundOrder) order;
-    //     for (Order o : compundOrder.orders) {
+    //     compoundOrder compoundOrder = (compoundOrder) order;
+    //     for (Order o : compoundOrder.orders) {
     //         o.placeOrder(o);
     //     }
     // }
 
-    public CompundOrder(List<SimpleOrder> orders, Status status, int id, String customer, double fees) {
+    public CompoundOrder(List<SimpleOrder> orders, Status status, int id, String customer, double fees) {
         this.id = id;
         this.customer = customer;
         this.fees = fees;
@@ -28,7 +28,6 @@ public class CompundOrder extends Order {
     public List<SimpleOrder> getOrders() {
         return orders;
     }
-
 
     @Override
     public double getTotal() {
@@ -41,6 +40,6 @@ public class CompundOrder extends Order {
 
     @Override
     public String toString() {
-        return "CompundOrder [orders=" + orders.toString() + ", status=" + status +  ", id= " + id + ", customer=" + customer + ", fees=" + fees + "]";
+        return "compoundOrder [orders=" + orders.toString() + ", status=" + status +  ", id= " + id + ", customer=" + customer + ", fees=" + fees + "]";
     }
 }

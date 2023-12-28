@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import aamm.order.model.CompundOrder;
+import aamm.order.model.CompoundOrder;
 import aamm.order.model.Order;
 import aamm.order.model.SimpleOrder;
-import aamm.order.service.CompundOrderService;
+import aamm.order.model.Status;
+import aamm.order.service.CompoundOrderService;
 import aamm.order.service.SimpleOrderService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class OrderController {
     @Autowired
     private SimpleOrderService simpleOrderService;
     @Autowired
-    private CompundOrderService compundOrderService;
+    private CompoundOrderService compoundOrderService;
 
     @PostMapping("/place-simple-order")
     public boolean placeSimpleOrder(@RequestBody SimpleOrder order) {
@@ -35,10 +36,10 @@ public class OrderController {
         return false;
     }
     
-    @PostMapping("/place-compund-order")
-    public boolean placeCompundOrder(@RequestBody CompundOrder order) {
+    @PostMapping("/place-compound-order")
+    public boolean placecompoundOrder(@RequestBody CompoundOrder order) {
         if(order != null){
-            compundOrderService.placeOrder(order);
+            compoundOrderService.placeOrder(order);
             return true;
         }
         return false;
@@ -52,5 +53,21 @@ public class OrderController {
     @GetMapping("/get-all-orders")
     public HashMap<Integer, Order> getAllOrders() {
         return simpleOrderService.getAllOrders();
+    }
+
+    @PostMapping("/cancel/simple-order/{id}")
+    public boolean cancelSimpleOrder(@PathVariable int id) {
+        return simpleOrderService.cancelOrder(id);
+    }
+
+    @PostMapping("/cancel/compound-order/{id}")
+    public boolean cancelcompoundOrder(@PathVariable int id) {
+        return compoundOrderService.cancelOrder(id);
+    }
+
+    @PostMapping("/change-status/{id}/{status}") // the admin can change the status of the order 
+    public boolean changeStatus(@PathVariable int id, @PathVariable String status) {
+        simpleOrderService.changeStatus(id, status);
+        return true;
     }
 }

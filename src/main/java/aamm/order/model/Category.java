@@ -4,15 +4,15 @@ import java.util.List;
 
 public class Category {
     private List<Product> products;
-    private String name;
+    private String slug;
     private int count;
-    public Category(String name, List<Product> products) {
-        this.name = name;
+    public Category(String slug, List<Product> products) {
+        this.slug = slug;
         this.products = products;
         this.count = products.size();
     }
-    public String getName() {
-        return name;
+    public String getSlug() {
+        return slug;
     }
     public List<Product> getProducts() {
         return products;

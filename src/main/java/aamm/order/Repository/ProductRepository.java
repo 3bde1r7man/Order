@@ -1,9 +1,35 @@
-// package aamm.order.Repository;
+package aamm.order.Repository;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
 
-// import aamm.order.model.Product;
+import java.util.HashMap;
 
-// public interface ProductRepository extends JpaRepository<Product, Long>{
-//     // additional query methods if needed
-// }
+import aamm.order.model.Product;
+
+public class ProductRepository {
+
+    HashMap<String, Product> products = new HashMap<String, Product>();
+
+    public boolean add(Product product) {
+        if(products.containsKey(product.getSerialNumber())) {
+            return false;
+        }
+        products.put(product.getSerialNumber(), product);
+        return true;
+    }
+
+    public Product getProduct(String serialNumber) {
+        return products.get(serialNumber);
+    }
+
+    public void updateProduct(String serialNumber, Product product) {
+        products.put(serialNumber, product);
+    }
+
+    public void deleteProduct(String serialNumber) {
+        products.remove(serialNumber);
+    }
+
+    public HashMap<String, Product> getProducts() {
+        return products;
+    }
+}

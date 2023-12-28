@@ -2,8 +2,6 @@ package aamm.order.model;
 
 
 public class Product {
-    
-    private long id;
     private String serialNumber;
     private String name;
     private double price;
@@ -11,16 +9,12 @@ public class Product {
     private String category;
 
 
-    public Product( String serialNumber, String name, double price, String vendor, String category) {
+    public Product(String serialNumber, String name, double price, String vendor, String category) {
         this.serialNumber = serialNumber;
         this.name = name;
         this.price = price;
         this.vendor = vendor;
         this.category = category;
-    }
-    
-    public long getId() {
-        return id;
     }
 
     public String getSerialNumber() {

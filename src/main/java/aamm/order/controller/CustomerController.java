@@ -35,7 +35,7 @@ public class CustomerController {
         return customerService.updateCustomer(customer);
     }
 
-    @GetMapping("/getallcustomers")
+    @GetMapping("/get_all_customers")
     public HashMap<String, Customer> getAllCustumers() {
         
         return customerService.getAllCustomers();

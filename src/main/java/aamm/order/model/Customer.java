@@ -1,11 +1,6 @@
 package aamm.order.model;
 
-import java.util.List;
-
-
-
 public class Customer {
-    
     long id; 
     String name;
     String mail;
@@ -20,7 +15,6 @@ public class Customer {
         this.password = password;
         this.phone = phone;
         this.balance = balance;
-        
         this.location = location;
     }
     public long getId() {
@@ -57,6 +51,12 @@ public class Customer {
     public Location getLocation() {
         return location;
     }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    
+
     @Override
     public String toString() {
         return "Customer{" + "name=" + name + ", mail=" + mail + ", password=" + password + ", phone=" + phone + ", balance=" + balance + ", location=" + location + '}';
