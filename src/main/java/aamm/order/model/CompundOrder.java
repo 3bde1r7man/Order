@@ -2,22 +2,45 @@ package aamm.order.model;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-@Service
-public class CompundOrder extends Order {
-    List<Order> orders;
-    
-    
-    @Override
-    public void placeOrder(Order order) {
-        CompundOrder compundOrder = (CompundOrder) order;
-        for (Order o : compundOrder.orders) {
-            o.placeOrder(o);
-        }
 
+
+
+public class CompundOrder extends Order {
+    List<SimpleOrder> orders;
+    
+    
+    // @Override
+    // public void placeOrder(Order order) {
+    //     CompundOrder compundOrder = (CompundOrder) order;
+    //     for (Order o : compundOrder.orders) {
+    //         o.placeOrder(o);
+    //     }
+    // }
+
+    public CompundOrder(List<SimpleOrder> orders, Status status, int id, String customer, double fees) {
+        this.id = id;
+        this.customer = customer;
+        this.fees = fees;
+        this.orders = orders;
+        this.status = status;
     }
+
+    public List<SimpleOrder> getOrders() {
+        return orders;
+    }
+
+
     @Override
     public double getTotal() {
-        return 0;
+        double total = 0;
+        for (Order o : orders) {
+            total += o.getTotal();
+        }
+        return total;
+    }
+
+    @Override
+    public String toString() {
+        return "CompundOrder [orders=" + orders.toString() + ", status=" + status +  ", id= " + id + ", customer=" + customer + ", fees=" + fees + "]";
     }
 }

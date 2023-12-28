@@ -11,10 +11,10 @@ import aamm.order.model.Customer;
 @Repository
 public class CustomerRepository  {
     private static HashMap<String, Customer> customers = new HashMap<String, Customer>();
-    
+    long id = 1;
 
     public void save(Customer customer) {
-        
+        customer.setId(id++);
         customers.put(customer.getName(), customer);
     }
 

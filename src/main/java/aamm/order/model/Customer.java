@@ -4,24 +4,31 @@ import java.util.List;
 
 
 
-
 public class Customer {
+    
+    long id; 
     String name;
     String mail;
     String password;
     String phone;
     double balance;
-    List<String> friends;
     Location location;
 
-    public Customer(String name, String mail, String password, String phone, double balance, List<String> friends, Location location) {
+    public Customer(String name, String mail, String password, String phone, double balance, Location location) {
         this.name = name;
         this.mail = mail;
         this.password = password;
         this.phone = phone;
         this.balance = balance;
-        this.friends = friends;
+        
         this.location = location;
+    }
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,17 +53,12 @@ public class Customer {
         return balance;
     }
 
-    public List<String> getFriends() {
-        return friends;
-    }
 
     public Location getLocation() {
         return location;
     }
     @Override
     public String toString() {
-        return "Customer{" + "name=" + name + ", mail=" + mail + ", password=" + password + ", phone=" + phone + ", balance=" + balance + ", friends=" + friends + ", location=" + location + '}';
+        return "Customer{" + "name=" + name + ", mail=" + mail + ", password=" + password + ", phone=" + phone + ", balance=" + balance + ", location=" + location + '}';
     }
-
-
 }
