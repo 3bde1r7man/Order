@@ -1,10 +1,8 @@
 package aamm.order.Repository;
 
 import java.util.HashMap;
-import java.util.List;
 
 import aamm.order.model.Category;
-import aamm.order.model.Product;
 
 public class CategoryRepository {
     HashMap<String, Category> categories = new HashMap<String, Category>();
