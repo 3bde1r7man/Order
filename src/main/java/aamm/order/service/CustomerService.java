@@ -1,6 +1,7 @@
 package aamm.order.service;
 
 import aamm.order.Repository.CustomerRepository;
+import aamm.order.config.JsonUtil;
 import aamm.order.model.Customer;
 
 import java.util.HashMap;
@@ -27,20 +28,24 @@ public class CustomerService {
     }
     
     public Customer getCustomer(String name) {
-        return customerRepo.find(name);
+        if (customerRepo.exists(name)) {
+            return customerRepo.find(name);
+        } else {
+            return null;
+        }
     }
 
     public boolean deleteCustomer(String name) {
-        if(customerRepo.exists(name)){
+        if (customerRepo.exists(name)) {
             customerRepo.delete(name);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public boolean updateCustomer(Customer customer) {
-        if(customerRepo.exists(customer.getName())){
+    public Boolean updateCustomer(String username, Customer customer) {
+        if(customerRepo.exists(username)){
             customerRepo.update(customer);
             return true;
         }else{

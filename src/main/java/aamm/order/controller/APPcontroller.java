@@ -1,4 +1,5 @@
 package aamm.order.controller;
+import aamm.order.config.JsonUtil;
 import aamm.order.model.Customer;
 
 import aamm.order.service.CustomerService;
@@ -22,11 +23,11 @@ public class APPcontroller {
     // private SimpleOrderService simpleOrderService;
 
     @PostMapping("/register")
-    public boolean register(@RequestBody Customer customer) {
-        if (customer != null) {
-            return customerService.register(customer);
+    public Object register(@RequestBody Customer customer) {
+        if (customerService.register(customer)) {
+            return JsonUtil.success("Customer registered successfully");
         } else {
-            return false;
+            return JsonUtil.error("Customer already exists");
         }
     }
 

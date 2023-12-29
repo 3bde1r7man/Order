@@ -31,7 +31,9 @@ public class CustomerRepository  {
     }
 
     public HashMap<String, Customer> findAll() {
-        
+        if (customers.isEmpty()) {
+            return null;
+        }
         return customers;
     }
 
