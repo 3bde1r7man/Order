@@ -53,10 +53,14 @@ public class CustomerService {
         }
     }
 
-    public void deductBalance(String name, double amount) {
+    public boolean deductBalance(String name, double amount) {
         Customer customer = customerRepo.find(name);
+        if (customer.getBalance() < amount) {
+            return false;
+        }
         customer.setBalance(customer.getBalance() - amount);
         customerRepo.update(customer);
+        return true;
     }
 
     public HashMap<String, Customer> getAllCustomers() {
