@@ -19,11 +19,16 @@ public class SimpleOrderService implements OrderService {
     
     
     @Override
-    public void placeOrder(Order order) {
+    public boolean placeOrder(Order order) {
         SimpleOrder simpleOrder = (SimpleOrder) order;
         simpleOrder.setStatus(Status.CONFIRMED);
-        customerService.deductBalance(simpleOrder.getCustomer(), simpleOrder.getTotal());
+        boolean response = customerService.deductBalance(simpleOrder.getCustomer(), simpleOrder.getTotal());
+        if(!response){
+            return false;
+        }
         orderRepository.add(simpleOrder);
+        return true;
+
     }
 
     @Override
@@ -42,8 +47,8 @@ public class SimpleOrderService implements OrderService {
         return false;
     }
 
-    public void changeStatus(int id, String status) {
-        orderRepository.changeStatus(id, status);
+    public int changeStatus(int id, String status) {
+        return orderRepository.changeStatus(id, status);
     }
 
     public HashMap<Integer, Order> getAllOrders() {

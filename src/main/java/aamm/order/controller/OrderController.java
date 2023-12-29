@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import aamm.order.config.JsonUtil;
 import aamm.order.model.CompoundOrder;
 import aamm.order.model.Order;
 import aamm.order.model.SimpleOrder;
-import aamm.order.model.Status;
 import aamm.order.service.CompoundOrderService;
 import aamm.order.service.SimpleOrderService;
 
@@ -20,54 +20,74 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
     @Autowired
     private SimpleOrderService simpleOrderService;
     @Autowired
     private CompoundOrderService compoundOrderService;
 
-    @PostMapping("/place-simple-order")
-    public boolean placeSimpleOrder(@RequestBody SimpleOrder order) {
+    @PostMapping("/place/simple-order")
+    public Object placeSimpleOrder(@RequestBody SimpleOrder order) {
         if(order != null){
-            simpleOrderService.placeOrder(order);
-            return true;
+            boolean response = simpleOrderService.placeOrder(order);
+            if (response) {
+                return JsonUtil.success("Order placed successfully");
+            }
+            JsonUtil.error("Order not placed");
         }
-        return false;
+        return JsonUtil.error("Order not placed");
     }
     
-    @PostMapping("/place-compound-order")
-    public boolean placecompoundOrder(@RequestBody CompoundOrder order) {
+    @PostMapping("/place/compound-order")
+    public Object placecompoundOrder(@RequestBody CompoundOrder order) {
         if(order != null){
-            compoundOrderService.placeOrder(order);
-            return true;
+            boolean response = compoundOrderService.placeOrder(order);
+            if (response) {
+                return JsonUtil.success("Order placed successfully");
+            }
+            JsonUtil.error("Order not placed");
         }
-        return false;
+        return JsonUtil.error("Order not placed");
     }
 
-    @GetMapping("/get-order/{id}")
+    @GetMapping("/{id}")
     public Order getOrder(@PathVariable int id) {
         return simpleOrderService.getOrder(id);
     }
 
-    @GetMapping("/get-all-orders")
+    @GetMapping("")
     public HashMap<Integer, Order> getAllOrders() {
         return simpleOrderService.getAllOrders();
     }
 
     @PostMapping("/cancel/simple-order/{id}")
-    public boolean cancelSimpleOrder(@PathVariable int id) {
-        return simpleOrderService.cancelOrder(id);
+    public Object cancelSimpleOrder(@PathVariable int id) {
+        boolean respone =  simpleOrderService.cancelOrder(id);
+        if (!respone) {
+            return JsonUtil.error("Order not cancelled");
+        }
+        return JsonUtil.success("Order cancelled successfully");
     }
 
     @PostMapping("/cancel/compound-order/{id}")
-    public boolean cancelcompoundOrder(@PathVariable int id) {
-        return compoundOrderService.cancelOrder(id);
-    }
+    public Object cancelcompoundOrder(@PathVariable int id) {
+        boolean respone =  compoundOrderService.cancelOrder(id);
+        if (!respone) {
+            return JsonUtil.error("Order not cancelled");
+        }
+        return JsonUtil.success("Order cancelled successfully");
+        }
 
     @PostMapping("/change-status/{id}/{status}") // the admin can change the status of the order 
-    public boolean changeStatus(@PathVariable int id, @PathVariable String status) {
-        simpleOrderService.changeStatus(id, status);
-        return true;
+    public Object changeStatus(@PathVariable int id, @PathVariable String status) {
+        int response = simpleOrderService.changeStatus(id, status);
+        if (response == -1) {
+            return JsonUtil.error("Order status already on intended status");
+        }
+        if (response == 0) {
+            return JsonUtil.error("Order status cannot be changed");
+        }
+        return JsonUtil.success("Order status changed successfully");
     }
 }

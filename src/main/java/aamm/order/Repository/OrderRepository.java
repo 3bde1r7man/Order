@@ -33,13 +33,24 @@ public class OrderRepository {
         return orders;
     }
 
-    public void changeStatus(int id, String status) {
+    public int changeStatus(int id, String status) {
         Order order = orders.get(id); 
+        if (order.getStatus() == status) {
+            return -1;
+        }
+        if (order.getStatus() == Status.CANCELLED.toString() || order.getStatus() == Status.DELIVERED.toString() && (status != Status.CANCELLED.toString() && status != Status.DELIVERED.toString())) {
+            return 0;
+        }
         order.setStatus(Status.fromString(status));
         orders.put(id, order);
+        return 1;
     }
 
-    public void update(Order order) {
-        orders.put(order.getId(), order);
+    public boolean update(Order order) {
+        if (orders.containsKey(order.getId())) {
+            orders.put(order.getId(), order);
+            return true;
+        }
+        return false;
     }
 }

@@ -17,13 +17,17 @@ public class CompoundOrderService implements OrderService{
     private OrderRepository orderRepository;
 
     @Override
-    public void placeOrder(Order order) {
+    public boolean placeOrder(Order order) {
         CompoundOrder compoundOrder = (CompoundOrder) order;
         for (Order o : compoundOrder.getOrders()) {
-            simpleOrderService.placeOrder((SimpleOrder)o);
+            boolean response = simpleOrderService.placeOrder((SimpleOrder)o);
+            if(!response){
+                return false;
+            }
         }
         compoundOrder.setStatus(Status.CONFIRMED);
         orderRepository.add(order);
+        return true;
     }
 
     @Override
