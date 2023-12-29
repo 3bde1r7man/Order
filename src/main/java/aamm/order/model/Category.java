@@ -1,22 +1,24 @@
 package aamm.order.model;
 
+import java.util.HashMap;
 import java.util.List;
 
+import aamm.order.Repository.ProductRepository;
 public class Category {
-    private List<String> products;
     private String slug;
     private int count;
     public Category(String slug, List<String> products) {
         this.slug = slug;
-        this.products = products;
-        this.count = products.size();
+        this.count = getProducts().size();
     }
     public String getSlug() {
         return slug;
     }
-    public List<String> getProducts() {
-        return products;
+
+    public HashMap<String, Product> getProducts() {
+        return ProductRepository.getCategoryProducts(slug);
     }
+
     public int getCount() {
         return count;
     }
