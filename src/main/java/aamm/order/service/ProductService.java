@@ -2,33 +2,33 @@ package aamm.order.service;
 
 import java.util.HashMap;
 
+import aamm.order.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import aamm.order.model.Product;
 @Service
 public class ProductService {
     @Autowired
-    ProductService productService;
+    ProductRepository productRepository;
     
-    public boolean addProduct(Product product) {
-        return productService.addProduct(product);
+    public int addProduct(Product product) {
+        return productRepository.add(product);
     }
 
 
     public Product getProduct(String serialNumber) {
-        return productService.getProduct(serialNumber);
+        return productRepository.getProduct(serialNumber);
     }
 
-    public void updateProduct(String serialNumber, Product product) {
-        productService.updateProduct(serialNumber, product);
+    public int updateProduct(String serialNumber, Product product) {
+        return productRepository.updateProduct(serialNumber, product);
     }
 
-    public void deleteProduct(String serialNumber) {
-        productService.deleteProduct(serialNumber);
+    public boolean deleteProduct(String serialNumber) {
+        return productRepository.deleteProduct(serialNumber);
     }
 
     public HashMap<String, Product> getProducts() {
-        return productService.getProducts();
+        return productRepository.getProducts();
     }
 }
