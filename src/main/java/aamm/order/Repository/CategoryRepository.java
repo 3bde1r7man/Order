@@ -2,8 +2,10 @@ package aamm.order.Repository;
 
 import java.util.HashMap;
 
-import aamm.order.model.Category;
+import org.springframework.stereotype.Repository;
 
+import aamm.order.model.Category;
+@Repository
 public class CategoryRepository {
     HashMap<String, Category> categories = new HashMap<String, Category>();
 

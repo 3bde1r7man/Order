@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,6 +23,8 @@ public class APPcontroller {
     // @Autowired
     // private SimpleOrderService simpleOrderService;
 
+
+
     @PostMapping("/register")
     public boolean register(@RequestBody Customer customer) {
         if (customer != null) {
@@ -28,6 +32,12 @@ public class APPcontroller {
         } else {
             return false;
         }
+    }
+
+
+    @PostMapping("/login/{userName}/{password}")
+    public boolean login(@PathVariable String userName, @PathVariable String password){
+        return customerService.login(userName, password);
     }
 
     // @PostMapping("/place-simple-order")

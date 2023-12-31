@@ -53,6 +53,12 @@ public class CustomerService {
         customer.setBalance(customer.getBalance() - amount);
         customerRepo.update(customer);
     }
+    public boolean login(String userName, String password){
+        if(customerRepo.exists(userName)){
+            return customerRepo.find(userName).getPassword().equals(password);
+        }
+        return false;
+    }
 
     public HashMap<String, Customer> getAllCustomers() {
         return customerRepo.findAll();
