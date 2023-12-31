@@ -2,16 +2,12 @@ package aamm.order.model;
 
 public class OrderNotification extends NotificationTemplate{
     
-    String orderMessage;
 
-    public String setNotificationTemplate()
+
+
+    public void setNotificationTemplate()
     {
-        this.orderMessage="Dear {x}, your order of the item {y} has been confirmed, Thanks for using our store :)";
-        return this.orderMessage;
+        this.templateMessage = "Dear {X}, your order of id {y} has been {z}, Thanks for using our store :)";
     }
 
-    public String getMessage()
-    {
-        return this.orderMessage;
-    }
 }

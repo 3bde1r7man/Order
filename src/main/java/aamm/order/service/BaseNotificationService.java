@@ -1,5 +1,10 @@
 package aamm.order.service;
 
+import java.util.HashMap;
+import java.util.Queue;
+
+import aamm.order.model.NotificationTemplate;
+
 public abstract class BaseNotificationService implements NotificationService{
     //NotificationRepository notify;
     NotificationService notifier;
@@ -16,7 +21,7 @@ public abstract class BaseNotificationService implements NotificationService{
     }
 
     @Override
-    public Object listNotifications()
+    public HashMap<String,NotificationTemplate> listNotifications()
     {
         return notifier.listNotifications();
     }

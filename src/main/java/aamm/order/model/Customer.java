@@ -11,16 +11,17 @@ public class Customer {
     String phone;
     double balance;
     Location location;
-    List<String>notifyWith;
+    List<String> notifyWith;
 
-    public Customer(String name, String mail, String password, String phone, double balance, Location location,List<String> notifyMethods) {
+    public Customer(String name, String mail, String password, String phone, double balance, Location location,List<String> notifyWith) {
         this.name = name;
         this.mail = mail;
         this.password = password;
         this.phone = phone;
         this.balance = balance;
         this.location = location;
-        this.notifyWith = notifyMethods;
+        this.notifyWith = notifyWith;
+
     }
     public long getId() {
         return id;
@@ -28,6 +29,10 @@ public class Customer {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setNotifyWith(List<String> notifyWith) {
+        this.notifyWith = notifyWith;
     }
 
     public String getName() {

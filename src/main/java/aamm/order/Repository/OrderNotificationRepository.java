@@ -2,12 +2,14 @@ package aamm.order.Repository;
 import aamm.order.config.JsonUtil;
 import org.springframework.stereotype.Repository;
 
+import aamm.order.model.ContactType;
 import aamm.order.model.Customer;
 import aamm.order.model.NotificationTemplate;
 import aamm.order.model.OrderNotification;
 import aamm.order.model.SimpleOrder;
-
+import aamm.order.model.ContactType;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -16,15 +18,30 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Repository
 public class OrderNotificationRepository implements NotificationRepository {
 
-    static Queue<HashMap<NotificationTemplate,String>> notifications = new ConcurrentLinkedQueue<>();
+    public static HashMap<String, NotificationTemplate> notifications = new HashMap<String, NotificationTemplate>();
+    long id = 1;
+
 
     OrderNotification notification;
 
+
+    public void save(NotificationTemplate notificationTemplate) {
+        notificationTemplate.setId(id++);
+        notifications.put(notificationTemplate.getContactInfo(), notificationTemplate);
+        
+    }
+    
     @Override
     public boolean Notify(SimpleOrder orderDetails)
     {
+        CustomerRepository customerRepository =new CustomerRepository();
+        Customer customer = customerRepository.find(orderDetails.getCustomer());
         notification=new OrderNotification();
-        String notificationData= notification.getMessage();
+
+
+        notification.setNotificationTemplate();
+
+        String notificationData= notification.getTemplateMessage();
         String products = "";
         for(int i=0;i<orderDetails.getProducts().size();i++)
         {
@@ -34,46 +51,44 @@ public class OrderNotificationRepository implements NotificationRepository {
         notificationData=notificationData.replace("{x}", orderDetails.getCustomer());
         notificationData=notificationData.replace("{y}",products);
 
-        CustomerRepository customer =new CustomerRepository();
-
-        Customer cust = customer.find(orderDetails.getCustomer());
-
-        if(cust.getNotifyWith().size()==1)
+        if(customer.getNotifyWith().size()==1)
         {
-            if(cust.getNotifyWith().get(0)=="mail")
+            if(customer.getNotifyWith().get(0) == ContactType.EMAIL.toString())
             {
-                HashMap<NotificationTemplate,String> addData =new HashMap<>();
-                addData.put(notification,cust.getMail());
-                notifications.add(addData);
+                notification.setContactInfo(customer.getMail());
+                notification.setContactType(ContactType.EMAIL);
             }
-            else if (cust.getNotifyWith().get(0)=="SMS") {
-                HashMap<NotificationTemplate,String> addData =new HashMap<>();
-                addData.put(notification,cust.getPhone());
-                notifications.add(addData);
+            else if (customer.getNotifyWith().get(0)== ContactType.SMS.toString()) {
+                notification.setContactInfo(customer.getPhone());
+                notification.setContactType(ContactType.SMS);
             }
         }
-        else
+        else if (customer.getNotifyWith().size()==2)
         {
-            HashMap<NotificationTemplate,String> addData =new HashMap<>();
-            addData.put(notification,cust.getPhone());
-            notifications.add(addData);
+            notification.setContactInfo(customer.getMail());
+            notification.setContactType(ContactType.EMAIL);
+            this.save(notification);
 
-            HashMap<NotificationTemplate,String> addData2 =new HashMap<>();
-            addData2.put(notification,cust.getMail());
-            notifications.add(addData2);
+            notification.setContactInfo(customer.getPhone());
+            notification.setContactType(ContactType.SMS);
+            this.save(notification);
         }
 
         return true;
     }
 
     @Override
-    public Object getNotification() throws InterruptedException
+    public NotificationTemplate getNotification()
     {
-        return notifications.poll();
+        NotificationTemplate notificationTemplate = notifications.get(this.id);
+        notifications.remove(this.id);
+        id--;
+        return notificationTemplate;
+
     }
 
     @Override
-    public Object listNotifications()
+    public HashMap<String, NotificationTemplate> listNotifications()
     {
         return notifications;
     }

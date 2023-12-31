@@ -1,9 +1,13 @@
 package aamm.order.service;
 
+import java.util.HashMap;
+import java.util.Queue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aamm.order.Repository.NotificationRepository;
+import aamm.order.model.NotificationTemplate;
 
 //import aamm.order.Repository.ShipmentNotificatioRepository;
 @Service
@@ -17,7 +21,7 @@ public class ShipmentNotificationService implements NotificationService{
     }
     
     @Override
-    public Object listNotifications() {
+    public HashMap<String,NotificationTemplate> listNotifications() {
         return repo.listNotifications();
     }
 }
