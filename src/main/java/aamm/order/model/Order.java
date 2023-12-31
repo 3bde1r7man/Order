@@ -1,5 +1,11 @@
 package aamm.order.model;
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> main
 public abstract class Order {
     protected int id;
     protected String customer;

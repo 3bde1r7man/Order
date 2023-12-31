@@ -1,8 +1,5 @@
 package aamm.order.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Customer {
     long id; 
     String name;
@@ -11,7 +8,6 @@ public class Customer {
     String phone;
     double balance;
     Location location;
-    List<String> notifyMethods;
 
     public Customer(String name, String mail, String password, String phone, double balance, Location location) {
         this.name = name;
@@ -20,7 +16,6 @@ public class Customer {
         this.phone = phone;
         this.balance = balance;
         this.location = location;
-        this.notifyMethods=new ArrayList<String>();
     }
     public long getId() {
         return id;
@@ -59,11 +54,6 @@ public class Customer {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-    
-    public List<String> getNotifyMethode()
-    {
-        return notifyMethods;
     }
     
     @Override

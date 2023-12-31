@@ -1,34 +1,33 @@
 package aamm.order.service;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aamm.order.Repository.OrderRepository;
+import aamm.order.model.CompoundOrder;
 import aamm.order.model.Order;
 import aamm.order.model.SimpleOrder;
 import aamm.order.model.Status;
 
 @Service
-public class SimpleOrderService implements OrderService {
+public class CompoundOrderService implements OrderService{
+    @Autowired
+    private SimpleOrderService simpleOrderService;
     @Autowired
     private OrderRepository orderRepository;
-    
-    @Autowired
-    private CustomerService customerService;
-    
-    
+
     @Override
     public boolean placeOrder(Order order) {
-        SimpleOrder simpleOrder = (SimpleOrder) order;
-        simpleOrder.setStatus(Status.CONFIRMED);
-        boolean response = customerService.deductBalance(simpleOrder.getCustomer(), simpleOrder.getTotal());
-        if(!response){
-            return false;
+        CompoundOrder compoundOrder = (CompoundOrder) order;
+        for (Order o : compoundOrder.getOrders()) {
+            boolean response = simpleOrderService.placeOrder((SimpleOrder)o);
+            if(!response){
+                return false;
+            }
         }
-        orderRepository.add(simpleOrder);
+        compoundOrder.setStatus(Status.CONFIRMED);
+        orderRepository.add(order);
         return true;
-
     }
 
     @Override
@@ -38,20 +37,16 @@ public class SimpleOrderService implements OrderService {
 
     @Override
     public boolean cancelOrder(int id) {
-        Order order = orderRepository.getOrder(id);
+        CompoundOrder order = (CompoundOrder)orderRepository.getOrder(id);
         if(order.getStatus() == Status.CONFIRMED.toString() || order.getStatus() == Status.SHIPPED.toString()){
             order.setStatus(Status.CANCELLED);
             orderRepository.update(order);
+            for (Order o : order.getOrders()) {
+                simpleOrderService.cancelOrder(o.getId());
+            }
             return true;
         }
         return false;
     }
-
-    public int changeStatus(int id, String status) {
-        return orderRepository.changeStatus(id, status);
-    }
-
-    public HashMap<Integer, Order> getAllOrders() {
-        return orderRepository.getOrders();
-    }
+    
 }
