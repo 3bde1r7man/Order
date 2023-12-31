@@ -16,6 +16,7 @@ import aamm.order.service.SimpleOrderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -61,7 +62,7 @@ public class OrderController {
         return simpleOrderService.getAllOrders();
     }
 
-    @PostMapping("/cancel/simple-order/{id}")
+    @PutMapping("/cancel/simple-order/{id}")
     public Object cancelSimpleOrder(@PathVariable int id) {
         boolean respone =  simpleOrderService.cancelOrder(id);
         if (!respone) {
@@ -70,7 +71,7 @@ public class OrderController {
         return JsonUtil.success("Order cancelled successfully");
     }
 
-    @PostMapping("/cancel/compound-order/{id}")
+    @PutMapping("/cancel/compound-order/{id}")
     public Object cancelcompoundOrder(@PathVariable int id) {
         boolean respone =  compoundOrderService.cancelOrder(id);
         if (!respone) {
@@ -79,7 +80,7 @@ public class OrderController {
         return JsonUtil.success("Order cancelled successfully");
         }
 
-    @PostMapping("/change-status/{id}/{status}") // the admin can change the status of the order 
+    @PutMapping("/change-status/{id}/{status}") // the admin can change the status of the order 
     public Object changeStatus(@PathVariable int id, @PathVariable String status) {
         int response = simpleOrderService.changeStatus(id, status);
         if (response == -1) {

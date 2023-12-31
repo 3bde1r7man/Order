@@ -22,6 +22,9 @@ public class SimpleOrderService implements OrderService {
     public boolean placeOrder(Order order) {
         SimpleOrder simpleOrder = (SimpleOrder) order;
         simpleOrder.setStatus(Status.CONFIRMED);
+        if(simpleOrder.getFees() == 0){
+            simpleOrder.setFees(randomFees(10, 200));
+        }
         boolean response = customerService.deductBalance(simpleOrder.getCustomer(), simpleOrder.getTotal());
         if(!response){
             return false;
@@ -38,7 +41,7 @@ public class SimpleOrderService implements OrderService {
 
     @Override
     public boolean cancelOrder(int id) {
-        Order order = orderRepository.getOrder(id);
+        SimpleOrder order = (SimpleOrder)orderRepository.getOrder(id);
         if(order.getStatus() == Status.CONFIRMED.toString() || order.getStatus() == Status.SHIPPED.toString()){
             order.setStatus(Status.CANCELLED);
             orderRepository.update(order);
@@ -53,5 +56,10 @@ public class SimpleOrderService implements OrderService {
 
     public HashMap<Integer, Order> getAllOrders() {
         return orderRepository.getOrders();
+    }
+
+
+    public int randomFees(int min, int max){
+        return  (int) (Math.random() * (max - min + 1) + min);
     }
 }

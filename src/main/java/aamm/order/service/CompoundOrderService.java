@@ -19,7 +19,11 @@ public class CompoundOrderService implements OrderService{
     @Override
     public boolean placeOrder(Order order) {
         CompoundOrder compoundOrder = (CompoundOrder) order;
+        compoundOrder.setFees(simpleOrderService.randomFees(10, 1000));
+        int size = compoundOrder.getOrders().size();
+        double feesForEach = compoundOrder.getFees()/size;
         for (Order o : compoundOrder.getOrders()) {
+            o.setFees(feesForEach);
             boolean response = simpleOrderService.placeOrder((SimpleOrder)o);
             if(!response){
                 return false;
