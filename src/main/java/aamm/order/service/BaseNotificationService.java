@@ -1,26 +1,24 @@
 package aamm.order.service;
 
-import aamm.order.Repository.NotificationRepository;
-
 public abstract class BaseNotificationService implements NotificationService{
     //NotificationRepository notify;
     NotificationService notifier;
-
+    public BaseNotificationService(){}
     public BaseNotificationService(NotificationService notify)
     {
         this.notifier = notify;
     }
 
     @Override
-    public Object sendNotification(NotificationRepository repo) throws InterruptedException 
+    public Object sendNotification() throws InterruptedException 
     {
-        return notifier.sendNotification(repo);
+        return notifier.sendNotification();
     }
 
     @Override
-    public Object listNotifications(NotificationRepository repo)
+    public Object listNotifications()
     {
-        return repo.listNotifications();
+        return notifier.listNotifications();
     }
 
 }
