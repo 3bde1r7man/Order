@@ -2,10 +2,10 @@ package aamm.order.model;
 
 public abstract class NotificationTemplate {
 
-    String templateMessage;
-    String contactInfo;
-    ContactType contactType;
-    long id;
+    protected String templateMessage;
+    protected String contactInfo;
+    protected ContactType contactType;
+    protected long id;
 
 
     public NotificationTemplate() {
