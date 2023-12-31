@@ -4,7 +4,9 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import aamm.order.Repository.OrderNotificationRepository;
 import aamm.order.Repository.OrderRepository;
+import aamm.order.Repository.ShipmentNotificatioRepository;
 import aamm.order.model.Order;
 import aamm.order.model.SimpleOrder;
 import aamm.order.model.Status;
@@ -30,8 +32,11 @@ public class SimpleOrderService implements OrderService {
             return false;
         }
         orderRepository.add(simpleOrder);
+        OrderNotificationRepository notify = new OrderNotificationRepository();
+        notify.Notify(simpleOrder);
+        ShipmentNotificatioRepository shipmentNotify = new ShipmentNotificatioRepository();
+        shipmentNotify.Notify(simpleOrder);
         return true;
-
     }
 
     @Override
@@ -45,12 +50,18 @@ public class SimpleOrderService implements OrderService {
         if(order.getStatus() == Status.CONFIRMED.toString() || order.getStatus() == Status.SHIPPED.toString()){
             order.setStatus(Status.CANCELLED);
             orderRepository.update(order);
+            ShipmentNotificatioRepository shipmentNotify = new ShipmentNotificatioRepository();
+            shipmentNotify.Notify(order);
+
             return true;
         }
         return false;
     }
 
     public int changeStatus(int id, String status) {
+        SimpleOrder order = (SimpleOrder)orderRepository.getOrder(id);
+        ShipmentNotificatioRepository shipmentNotify = new ShipmentNotificatioRepository();
+        shipmentNotify.Notify(order);
         return orderRepository.changeStatus(id, status);
     }
 

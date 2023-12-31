@@ -1,8 +1,5 @@
 package aamm.order.model;
 
-
-
-
 public abstract class Order {
     protected int id;
     protected String customer;
