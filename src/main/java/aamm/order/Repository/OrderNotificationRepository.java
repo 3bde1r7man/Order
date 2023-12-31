@@ -34,7 +34,7 @@ public class OrderNotificationRepository implements NotificationRepository {
     @Override
     public boolean Notify(SimpleOrder orderDetails)
     {
-        CustomerRepository customerRepository =new CustomerRepository();
+        CustomerRepository customerRepository =new CustomerRepositoryInMem();
         Customer customer = customerRepository.find(orderDetails.getCustomer());
         notification=new OrderNotification();
 
