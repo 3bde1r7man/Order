@@ -44,7 +44,7 @@ public class CustomerService {
         }
     }
 
-    public Boolean updateCustomer(String username, Customer customer) {
+    public boolean updateCustomer(String username, Customer customer) {
         if(customerRepo.exists(username)){
             customerRepo.update(customer);
             return true;

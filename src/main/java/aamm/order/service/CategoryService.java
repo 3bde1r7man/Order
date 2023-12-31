@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aamm.order.Repository.CategoryRepository;
+import aamm.order.Repository.CategoryRepositoryInMem;
 import aamm.order.model.Category;
 import aamm.order.model.Product;
 
@@ -14,9 +15,11 @@ import aamm.order.model.Product;
 public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
+    
 
+    
     public boolean addCategory(Category category) {
-        if (CategoryRepository.isCategoryExists(category.getSlug())) {
+        if (CategoryRepositoryInMem.isCategoryExists(category.getSlug())) {
             return false;
         }
         categoryRepository.add(category);
@@ -24,7 +27,7 @@ public class CategoryService {
     }
 
     public Category getCategory(String slug) {
-        if (CategoryRepository.isCategoryExists(slug)) {
+        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
             return categoryRepository.getCategory(slug);
         } else {
             return null;
@@ -32,7 +35,7 @@ public class CategoryService {
     }
 
     public boolean updateCategory(String slug, Category category) {
-        if (CategoryRepository.isCategoryExists(slug)) {
+        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
             categoryRepository.updateCategory(slug, category);
             return true;
         } else {
@@ -41,7 +44,7 @@ public class CategoryService {
     }
 
     public boolean deleteCategory(String slug) {
-        if (CategoryRepository.isCategoryExists(slug)) {
+        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
             categoryRepository.deleteCategory(slug);
             return true;
         } else {
@@ -58,7 +61,7 @@ public class CategoryService {
     }
 
     public HashMap<String, Product> getCategoryProducts(String slug) {
-        if (CategoryRepository.isCategoryExists(slug)) {
+        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
             return categoryRepository.getProducts(slug);
         } else {
             return null;
