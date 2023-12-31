@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegisterValidator implements Validator {
     @Autowired
-    private CustomerRepository customerRepo;
+    CustomerRepository customerRepo;
 
 
     @Override

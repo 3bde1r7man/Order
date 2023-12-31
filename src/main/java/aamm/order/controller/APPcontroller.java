@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class APPcontroller {
     @Autowired
     private CustomerService customerService;
-    // @Autowired
-    // private SimpleOrderService simpleOrderService;
 
     @PostMapping("/register")
     public Object register(@RequestBody Customer customer) {
@@ -30,22 +28,5 @@ public class APPcontroller {
             return JsonUtil.error("Customer already exists");
         }
     }
-
-    // @PostMapping("/place-simple-order")
-    // public boolean placeSimpleOrder(@RequestBody SimpleOrder order) {
-    //     if(order != null){
-    //         simpleOrderService.placeOrder(order);
-
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
-
-    // @GetMapping("/get-order/{id}")
-    // public Order getOrder(@PathVariable int id) {
-    //     return simpleOrderService.getOrder(id);
-    // }
-    
     
 }

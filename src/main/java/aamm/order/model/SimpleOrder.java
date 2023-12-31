@@ -25,7 +25,7 @@ public class SimpleOrder extends Order {
 
     @Override
     public double getTotal() {
-        return totalPrice;
+        return totalPrice + fees;
     }
 
 
@@ -37,6 +37,5 @@ public class SimpleOrder extends Order {
     public String toString() {
         return "SimpleOrder [products=" + products.toString() + ", totalPrice=" + totalPrice + ", status=" + status +  " id= " + id + ", customer=" + customer + ", fees=" + fees + "]";
     }
-    
 
 }

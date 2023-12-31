@@ -40,6 +40,10 @@ public abstract class Order {
     public String getStatus() {
         return status.toString();
     }
+    
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
     public abstract double getTotal();
 
 }
