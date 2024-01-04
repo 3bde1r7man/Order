@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aamm.order.config.JsonUtil;
 import aamm.order.model.Category;
-import aamm.order.model.Product;
 import aamm.order.service.CategoryService;
 
 @RestController

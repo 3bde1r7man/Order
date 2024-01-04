@@ -29,20 +29,19 @@ public class ShipmentNotificatioRepository implements NotificationRepository {
     
     public void save(NotificationTemplate notificationTemplate) {
         notificationTemplate.setId(id++);
-        System.out.println("inside save" );
         notifications.put(notificationTemplate.getContactInfo(), notificationTemplate);
         
     }
     @Override
     public boolean Notify(SimpleOrder orderDetails)
     {
-        CustomerRepository customerRepository =new CustomerRepository();
+        CustomerRepository customerRepository =new CustomerRepositoryInMem();
         Customer customer = customerRepository.find(orderDetails.getCustomer());
-        this.notification = new ShipmentNotification();
+        notification=new ShipmentNotification();
 
-        this.notification.setNotificationTemplate();
+        notification.setNotificationTemplate();
 
-        String notificationData= this.notification.getTemplateMessage();
+        String notificationData= notification.getTemplateMessage();
         String products = "";
         for(int i=0;i<orderDetails.getProducts().size();i++)
         {
@@ -66,19 +65,18 @@ public class ShipmentNotificatioRepository implements NotificationRepository {
                 this.notification.setContactInfo(customer.getPhone());
                 this.notification.setContactType(ContactType.SMS);
             }
-            this.save(this.notification);
         }
         else if (customer.getNotifyWith().size()==2)
         {
-            this.notification.setContactInfo(customer.getMail());
-            this.notification.setContactType(ContactType.EMAIL);
-            this.save(this.notification);
+            notification.setContactInfo(customer.getMail());
+            notification.setContactType(ContactType.EMAIL);
+            this.save(notification);
 
-            this.notification.setContactInfo(customer.getPhone());
-            this.notification.setContactType(ContactType.SMS);
-            this.save(this.notification);
+            notification.setContactInfo(customer.getPhone());
+            notification.setContactType(ContactType.SMS);
+            this.save(notification);
         }
-        System.out.println("Notification asdasdasda: " + this.notification.toString());
+
         System.out.println("Notification sent to "+customer.getName()+" with "+customer.getNotifyWith().toString());
         System.out.println("Notificationsssssssssss data: " + notifications.toString());
         return true;
