@@ -31,21 +31,21 @@ public class CompoundOrderService implements OrderService{
             }
         }
         compoundOrder.setStatus(Status.CONFIRMED);
-        orderRepository.add(order);
+        orderRepository.save(order);
         return true;
     }
 
     @Override
     public Order getOrder(int id) {
-        return orderRepository.getOrder(id);
+        return orderRepository.findById(id).get();
     }
 
     @Override
     public boolean cancelOrder(int id) {
-        CompoundOrder order = (CompoundOrder)orderRepository.getOrder(id);
-        if(order.getStatus() == Status.CONFIRMED.toString() || order.getStatus() == Status.SHIPPED.toString()){
+        CompoundOrder order = (CompoundOrder)orderRepository.findById(id).get();
+        if(order.getStatus().equals(Status.CONFIRMED.toString())|| order.getStatus().equals(Status.SHIPPED.toString())){
             order.setStatus(Status.CANCELLED);
-            orderRepository.update(order);
+            orderRepository.save(order);
             for (Order o : order.getOrders()) {
                 simpleOrderService.cancelOrder(o.getId());
             }

@@ -56,7 +56,7 @@ public class RegisterValidator implements Validator {
 
     public boolean isUniqeUsername(String name) {
         // Username must be unique.
-        if(customerRepo.exists(name)){
+        if(customerRepo.existsById(name)){
             return false;
         }else{
             return true;

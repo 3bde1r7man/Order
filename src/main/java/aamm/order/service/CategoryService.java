@@ -1,42 +1,42 @@
 package aamm.order.service;
 
-import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aamm.order.Repository.CategoryRepository;
-import aamm.order.Repository.CategoryRepositoryInMem;
 import aamm.order.model.Category;
-import aamm.order.model.Product;
+
 
 @Service
 public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
-    
+    @Autowired
+    ProductService productService;
 
+    public boolean isCategoryExists(String slug) {
+        return categoryRepository.existsById(slug);
+    }
     
     public boolean addCategory(Category category) {
-        if (CategoryRepositoryInMem.isCategoryExists(category.getSlug())) {
+        if (categoryRepository.existsById(category.getSlug())) {
             return false;
         }
-        categoryRepository.add(category);
+        categoryRepository.save(category);
         return true;
     }
 
     public Category getCategory(String slug) {
-        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
-            return categoryRepository.getCategory(slug);
+        if (categoryRepository.existsById(slug)) {
+            return categoryRepository.findById(slug).get();
         } else {
             return null;
         }
     }
 
     public boolean updateCategory(String slug, Category category) {
-        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
-            categoryRepository.updateCategory(slug, category);
+        if (categoryRepository.existsById(slug)) {
+            categoryRepository.save(category);
             return true;
         } else {
             return false;
@@ -44,25 +44,25 @@ public class CategoryService {
     }
 
     public boolean deleteCategory(String slug) {
-        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
-            categoryRepository.deleteCategory(slug);
+        if (categoryRepository.existsById(slug)) {
+            categoryRepository.deleteById(slug);
             return true;
         } else {
             return false;
         }
     }
 
-    public HashMap<String, Category> getCategories() {
-        if (categoryRepository.getCategories() != null) {
-            return categoryRepository.getCategories();
+    public Object getCategories() {
+        if (categoryRepository.findAll() != null) {
+            return categoryRepository.findAll();
         } else {
             return null;
         }
     }
 
-    public HashMap<String, Product> getCategoryProducts(String slug) {
-        if (CategoryRepositoryInMem.isCategoryExists(slug)) {
-            return categoryRepository.getProducts(slug);
+    public Object getCategoryProducts(String slug) {
+        if (categoryRepository.existsById(slug)) {
+            return productService.getProductsByCategory(slug);
         } else {
             return null;
         }

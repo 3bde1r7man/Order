@@ -13,7 +13,7 @@ import aamm.order.model.NotificationTemplate;
 @Service
 public class OrderNotifcationService implements NotificationService{
     @Autowired
-    NotificationRepository repo ;
+    NotificationRepository repo;
 
     public OrderNotifcationService(){};
     @Override

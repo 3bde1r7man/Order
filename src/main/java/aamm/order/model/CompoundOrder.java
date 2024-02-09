@@ -2,11 +2,17 @@ package aamm.order.model;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import lombok.*;
 
-
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
 public class CompoundOrder extends Order {
-    List<SimpleOrder> orders;
+    private List<SimpleOrder> orders;
     
     
     // @Override
@@ -38,8 +44,5 @@ public class CompoundOrder extends Order {
         return total;
     }
 
-    @Override
-    public String toString() {
-        return "compoundOrder [orders=" + orders.toString() + ", status=" + status +  ", id= " + id + ", customer=" + customer + ", fees=" + fees + "]";
-    }
+
 }

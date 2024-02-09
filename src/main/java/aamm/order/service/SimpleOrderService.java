@@ -31,7 +31,7 @@ public class SimpleOrderService implements OrderService {
         if(!response){
             return false;
         }
-        orderRepository.add(simpleOrder);
+        orderRepository.save(simpleOrder);
         OrderNotificationRepository notify = new OrderNotificationRepository();
         notify.Notify(simpleOrder);
         ShipmentNotificatioRepository shipmentNotify = new ShipmentNotificatioRepository();
@@ -41,15 +41,15 @@ public class SimpleOrderService implements OrderService {
 
     @Override
     public Order getOrder(int id) {
-        return orderRepository.getOrder(id);
+        return orderRepository.findById(id).get();
     }
 
     @Override
     public boolean cancelOrder(int id) {
-        SimpleOrder order = (SimpleOrder)orderRepository.getOrder(id);
-        if(order.getStatus() == Status.CONFIRMED.toString() || order.getStatus() == Status.SHIPPED.toString()){
+        SimpleOrder order = (SimpleOrder)orderRepository.findById(id).get();
+        if(order.getStatus().equals(Status.CONFIRMED.toString()) || order.getStatus().equals(Status.SHIPPED.toString())){
             order.setStatus(Status.CANCELLED);
-            orderRepository.update(order);
+            orderRepository.save(order);
             ShipmentNotificatioRepository shipmentNotify = new ShipmentNotificatioRepository();
             shipmentNotify.Notify(order);
 
@@ -59,14 +59,22 @@ public class SimpleOrderService implements OrderService {
     }
 
     public int changeStatus(int id, String status) {
-        SimpleOrder order = (SimpleOrder)orderRepository.getOrder(id);
+        SimpleOrder order = (SimpleOrder)orderRepository.findById(id).get();
         ShipmentNotificatioRepository shipmentNotify = new ShipmentNotificatioRepository();
         shipmentNotify.Notify(order);
-        return orderRepository.changeStatus(id, status);
+        if(order.getStatus().equals(status)){
+            return -1;
+        }
+        if((order.getStatus().equals(Status.CANCELLED.toString()) || order.getStatus().equals(Status.DELIVERED.toString())) && (!status.equals(Status.CANCELLED.toString()) && !status.equals(Status.DELIVERED.toString()))){
+            return 0;
+        }
+        order.setStatus(Status.fromString(status));
+        orderRepository.save(order);
+        return 1;
     }
 
-    public HashMap<Integer, Order> getAllOrders() {
-        return orderRepository.getOrders();
+    public Object getAllOrders() {
+        return orderRepository.findAll();
     }
 
 

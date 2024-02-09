@@ -3,23 +3,18 @@ package aamm.order.model;
 import java.util.HashMap;
 import java.util.List;
 
-import aamm.order.Repository.ProductRepositoryInMem;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
 public class Category {
+    @Id
     private String slug;
-    private int count;
-    public Category(String slug, List<String> products) {
-        this.slug = slug;
-        this.count = getProducts().size();
-    }
-    public String getSlug() {
-        return slug;
-    }
-
-    public HashMap<String, Product> getProducts() {
-        return ProductRepositoryInMem.getCategoryProducts(slug);
-    }
-
-    public int getCount() {
-        return count;
-    }
 }

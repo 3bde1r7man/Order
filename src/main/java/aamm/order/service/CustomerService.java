@@ -1,13 +1,10 @@
 package aamm.order.service;
 
-import aamm.order.Repository.CustomerRepository;
-import aamm.order.config.JsonUtil;
-import aamm.order.model.Customer;
-
-import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import aamm.order.Repository.CustomerRepository;
+import aamm.order.model.Customer;
 
 
 @Service
@@ -28,16 +25,16 @@ public class CustomerService {
     }
     
     public Customer getCustomer(String name) {
-        if (customerRepo.exists(name)) {
-            return customerRepo.find(name);
+        if (customerRepo.existsById(name)) {
+            return customerRepo.findById(name).get();
         } else {
             return null;
         }
     }
 
     public boolean deleteCustomer(String name) {
-        if (customerRepo.exists(name)) {
-            customerRepo.delete(name);
+        if (customerRepo.existsById(name)) {
+            customerRepo.deleteById(name);
             return true;
         } else {
             return false;
@@ -45,8 +42,8 @@ public class CustomerService {
     }
 
     public boolean updateCustomer(String username, Customer customer) {
-        if(customerRepo.exists(username)){
-            customerRepo.update(customer);
+        if(customerRepo.existsById(username)){
+            customerRepo.save(customer);
             return true;
         }else{
             return false;
@@ -54,16 +51,16 @@ public class CustomerService {
     }
 
     public boolean deductBalance(String name, double amount) {
-        Customer customer = customerRepo.find(name);
+        Customer customer = customerRepo.findById(name).get();
         if (customer.getBalance() < amount) {
             return false;
         }
         customer.setBalance(customer.getBalance() - amount);
-        customerRepo.update(customer);
+        customerRepo.save(customer);
         return true;
     }
 
-    public HashMap<String, Customer> getAllCustomers() {
+    public Object getAllCustomers() {
         return customerRepo.findAll();
     }
 }
