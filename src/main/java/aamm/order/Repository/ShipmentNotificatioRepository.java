@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.management.Notification;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
 import aamm.order.config.JsonUtil;
 import aamm.order.model.ContactType;
 import aamm.order.model.Customer;
@@ -14,6 +17,8 @@ import aamm.order.model.OrderNotification;
 import aamm.order.model.ShipmentNotification;
 import aamm.order.model.SimpleOrder;
 
+@Repository
+@Primary
 public class ShipmentNotificatioRepository implements NotificationRepository {
     static HashMap<String, NotificationTemplate> notifications = new HashMap<String,NotificationTemplate>();
     ShipmentNotification notification;
@@ -44,16 +49,16 @@ public class ShipmentNotificatioRepository implements NotificationRepository {
 
         notificationData=notificationData.replace("{x}", orderDetails.getCustomer());
         notificationData=notificationData.replace("{y}",products);
-
-
+        notificationData=notificationData.replace("{z}",orderDetails.getStatus().toString());
+        notification.setTemplateMessage(notificationData);
         if(customer.getNotifyWith().size()==1)
         {
-            if(customer.getNotifyWith().get(0) == ContactType.EMAIL.toString())
+            if(customer.getNotifyWith().get(0).equals(ContactType.EMAIL.toString()))
             {
                 notification.setContactInfo(customer.getMail());
                 notification.setContactType(ContactType.EMAIL);
             }
-            else if (customer.getNotifyWith().get(0)== ContactType.SMS.toString()) {
+            else if (customer.getNotifyWith().get(0).equals(ContactType.SMS.toString())) {
                 notification.setContactInfo(customer.getPhone());
                 notification.setContactType(ContactType.SMS);
             }
@@ -63,14 +68,12 @@ public class ShipmentNotificatioRepository implements NotificationRepository {
             notification.setContactInfo(customer.getMail());
             notification.setContactType(ContactType.EMAIL);
             this.save(notification);
-
-            notification.setContactInfo(customer.getPhone());
-            notification.setContactType(ContactType.SMS);
-            this.save(notification);
+            ShipmentNotification notification2 = new ShipmentNotification();
+            notification2.setContactInfo(customer.getPhone());
+            notification2.setContactType(ContactType.SMS);
+            notification2.setTemplateMessage(notificationData);
+            this.save(notification2);
         }
-
-        System.out.println("Notification sent to "+customer.getName()+" with "+customer.getNotifyWith().toString());
-        System.out.println("Notification data: " + notifications.toString());
         return true;
     }
 

@@ -20,6 +20,9 @@ public abstract class NotificationTemplate {
         return id;
     }
     public abstract void setNotificationTemplate();
+    public void setTemplateMessage(String templateMessage) {
+        this.templateMessage = templateMessage;
+    }
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
@@ -40,6 +43,8 @@ public abstract class NotificationTemplate {
     public ContactType getContactType() {
         return contactType;
     }
+
+    
 
     public String toString() {
         return "NotificationTemplate{" +
